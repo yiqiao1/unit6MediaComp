@@ -53,6 +53,15 @@ public class PictureTester
     beach.explore();
   }
   
+  /** Method to test sepia */
+  public static void testSepia()
+  {
+    Picture beach = new Picture("beach.jpg");
+    beach.explore();
+    beach.sepia();
+    beach.explore();
+  }
+  
   /** Method to test mirrorVertical */
   public static void testMirrorVertical()
   {
@@ -148,8 +157,9 @@ public class PictureTester
   /** Method to test the collage method */
   public static void testCollage()
   {
-    Picture canvas = new Picture("640x480.jpg");
-    canvas.createCollage();
+    Picture canvas = new Picture(1200, 800);
+    Picture suzhou = new Picture("suzhou.jpg");
+    canvas.createCollage(suzhou);
     canvas.explore();
   }
   
