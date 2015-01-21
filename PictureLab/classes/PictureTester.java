@@ -150,14 +150,14 @@ public class PictureTester
       Picture beach = new Picture("beach.jpg");
       Picture gull = new Picture("seagull.jpg");
       beach.explore();
-      beach.scaleByHalf(gull);
+      beach.scaleByHalf(gull, 0, 0);
       beach.explore();
   }
   
   /** Method to test the collage method */
   public static void testCollage()
   {
-    Picture canvas = new Picture(1200, 800);
+    Picture canvas = new Picture(800, 1200);
     Picture suzhou = new Picture("suzhou.jpg");
     canvas.createCollage(suzhou);
     canvas.explore();

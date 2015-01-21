@@ -287,10 +287,10 @@ public class Picture extends SimplePicture
     Pixel[][] pixels = this.getPixels2D();
     Pixel bottomLeftPixel = null;
     Pixel topRightPixel = null;
-    int height = pixels.length - 1;
-    for (int row = 0; row < height; row++)
+    int height = pixels.length;
+    for (int col = 0; col < height; col++)
     {
-      for (int col = 0; col < height; col++)
+      for (int row = 0; row < height; row++)
       {
         bottomLeftPixel = pixels[row][col];
         topRightPixel = pixels[col][row];
@@ -468,18 +468,18 @@ public class Picture extends SimplePicture
     }   
   }
 
-  public void scaleByHalf(Picture sourcePicture)
+  public void scaleByHalf(Picture sourcePicture, int startDestRow, int startDestCol)
   {
     Pixel[][] toPixels = this.getPixels2D();
     Pixel[][] fromPixels = sourcePicture.getPixels2D();
     Pixel fromPixel = null;
     Pixel toPixel = null;
     
-    for (int fromRow = 0, toRow = 0;
+    for (int fromRow = 0, toRow = startDestRow;
          fromRow < fromPixels.length;
          fromRow += 2, toRow++)
     {
-      for (int fromCol = 0, toCol = 0;
+      for (int fromCol = 0, toCol = startDestCol;
             fromCol < fromPixels[0].length;
             fromCol += 2, toCol++)
       {
@@ -490,16 +490,58 @@ public class Picture extends SimplePicture
     }
   }
   
+  public void upsideDown(Picture sourcePicture)
+  {
+    Pixel[][] toPixels = this.getPixels2D();
+    Pixel[][] fromPixels = sourcePicture.getPixels2D();
+    Pixel fromPixel = null;
+    Pixel toPixel = null;
+    
+    for (int fromRow = 0; fromRow < fromPixels.length; fromRow++)
+    {
+        for (int fromCol = 0; fromCol < fromPixels[0].length; fromCol++)
+        {
+            fromPixel = fromPixels[fromRow][fromCol];
+            toPixel = toPixels[toPixels.length - fromRow - 1][fromCol];
+            toPixel.setColor(fromPixel.getColor());
+        }
+    }
+  }
+  
   /** Method to create a collage of several pictures */
   public void createCollage(Picture sourcePic)
   {
     Picture pic1 = new Picture(sourcePic);
     pic1.negate();
-    this.copy(sourcePic, 0, 0);
-    this.copy(pic1, 600, 0);
-    this.copy(sourcePic, 0, 400);
-    this.copy(sourcePic, 600, 400);
+    pic1.mirrorHorizontal();
     
+    Picture pic2 = new Picture(sourcePic);
+    pic2.fixUnderwater();
+    pic2.mirrorVertical();
+    
+    Picture pic3 = new Picture(sourcePic);
+    pic3.keepOnlyBlue();
+    
+    Picture pic4 = new Picture(sourcePic);
+    pic4.sepia();
+    pic4.mirrorHorizontalBotToTop();
+    
+    Picture pic5 = new Picture(sourcePic);
+    pic5.zeroBlue();
+    pic5.mirrorVerticalRightToLeft();
+    
+    Picture pic6 = new Picture(sourcePic);
+    pic6.upsideDown(sourcePic);
+    
+    this.copy(sourcePic, 0, 0);
+    this.copy(pic1, 400, 0);
+    this.copy(pic2, 0, 600);
+    this.scaleByHalf(pic3, 400, 600);
+    this.scaleByHalf(pic4, 600, 600);
+    this.scaleByHalf(pic5, 400, 900);
+    this.scaleByHalf(pic6, 600, 900);
+    
+    this.write("H:\\GitHub\\unit6MediaComp\\images\\MyCollage.jpg");
   }
   
   
