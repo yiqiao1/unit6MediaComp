@@ -541,7 +541,8 @@ public class Picture extends SimplePicture
     this.scaleByHalf(pic5, 400, 900);
     this.scaleByHalf(pic6, 600, 900);
     
-    this.write("H:\\GitHub\\unit6MediaComp\\images\\MyCollage.jpg");
+    this.write("MyCollage.jpg");
+
   }
   
   
